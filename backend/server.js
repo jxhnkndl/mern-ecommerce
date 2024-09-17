@@ -1,8 +1,12 @@
 // ES6 module syntax because type="module" is set in package.json
 import express from 'express';
+import dotenv from 'dotenv';
 import products from './data/products.js';
 
-const PORT = process.env.PORT || 3001;
+// Import environmental variables from .env
+dotenv.config();
+
+const PORT = process.env.PORT;
 
 const app = express();
 
