@@ -7,7 +7,7 @@ import { createSlice } from '@reduxjs/toolkit';
 // Otherwise set initial state to contain an empty cardItems array
 const initialState = localStorage.getItem('cart')
   ? JSON.parse(localStorage.getItem('cart'))
-  : { cardItems: [] };
+  : { cartItems: [] };
 
 // Convert prices to two decimal points
 const addDecimals = (num) => {
@@ -39,14 +39,14 @@ const cartSlice = createSlice({
 
       // Calculate price of all items in cart (to two decimal points)
       state.itemsPrice = addDecimals(
-        state.cartItems.reducer((acc, item) => acc + item.price * item.qty, 0)
+        state.cartItems.reduce((acc, item) => acc + item.price * item.qty, 0)
       );
 
       // Calculate shipping price (if order is over $100 = free, otherwise shipping is $10)
       state.shippingPrice = addDecimals(state.itemsPrice > 100 ? 0 : 10);
 
       // Calculate tax price (15% on all items)
-      state.taxPrice = addDecimals(Number((0.15 * state.itemPrice).toFixed(2)));
+      state.taxPrice = addDecimals(Number((0.15 * state.itemsPrice).toFixed(2)));
 
       // Calculate total price
       state.totalPrice = (
