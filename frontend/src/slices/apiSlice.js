@@ -2,6 +2,8 @@
 // fetchBaseQuery is used make requests to the back end API with built in caching, retries, and base URL
 // management
 
+// Think of this apiSlice as the PARENT for the rest of the sub-API slices (product, user, order)
+
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { BASE_URL } from '../constants';
 
