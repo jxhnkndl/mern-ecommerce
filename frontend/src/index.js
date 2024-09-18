@@ -14,10 +14,10 @@ import './assets/styles/bootstrap.custom.css';
 import './assets/styles/index.css';
 
 // Create routes
+// This is the master component that gets render when user visits /
+// Interior routes get rendered inside the <Outlet /> component in <App />
+// The true index ensures that ONLY the home screen shows up at the / route
 const router = createBrowserRouter(createRoutesFromElements(
-  // This is the master component that gets render when user visits /
-  // Interior routes get rendered inside the <Outlet /> component in <App />
-  // The true index ensures that ONLY the home screen shows up at the / route
   <Route path="/" element={<App />}>
     <Route index={true} path="/" element={<HomeScreen />} />
     <Route path="/product/:id" element={<ProductScreen />} />
