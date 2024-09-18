@@ -1,8 +1,9 @@
 // ES6 module syntax because type="module" is set in package.json
 import express from 'express';
 import dotenv from 'dotenv';
+import { notFound, errorHandler } from './middleware/errorMiddleware.js';
 import connectDB from './config/db.js';
-import products from './data/products.js';
+import productRoutes from './routes/productRoutes.js';
 
 // Import environmental variables from .env
 dotenv.config();
@@ -14,19 +15,17 @@ connectDB();
 
 const app = express();
 
+// Get root endpoint
 app.get('/', (req, res) => {
   res.send('API is running...')
 });
 
-// All products
-app.get('/api/products', (req, res) => {
-  res.json(products);
-});
+// Install app's product routes
+app.use('/api/products', productRoutes);
 
-// Single product
-app.get('/api/products/:id', (req, res) => {
-  const product = products.find((product) => product._id === req.params.id);
-  res.json(product);
-});
+// Set up error handling middleware
+app.use(notFound);
+app.use(errorHandler);
+
 
 app.listen(PORT, () => console.log(`Server running on port ${PORT} 🚀`));
