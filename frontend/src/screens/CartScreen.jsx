@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { addToCart } from '../slices/cartSlice';
+import { addToCart, removeFromCart } from '../slices/cartSlice';
 import {
   Row,
   Col,
@@ -25,6 +25,11 @@ const CartScreen = () => {
   // Allow item quantity to be changed on cart screen and reflected in order total
   const addToCartHandler = async (product, qty) => {
     dispatch(addToCart({ ...product, qty }));
+  };
+
+  // Allow item quantity to be changed on cart screen and reflected in order total
+  const removeFromCartHandler = async (id) => {
+    dispatch(removeFromCart(id));
   };
 
   return (
@@ -67,7 +72,10 @@ const CartScreen = () => {
                     </Form.Control>
                   </Col>
                   <Col md={2}>
-                    <Button type='button' variant='light'>
+                    <Button
+                      type='button'
+                      variant='light'
+                      onClick={() => removeFromCartHandler(item._id)}>
                       <FaTrash />
                     </Button>
                   </Col>

@@ -35,14 +35,21 @@ const cartSlice = createSlice({
         state.cartItems = [...state.cartItems, newItem];
       }
 
-      // Calculate prices and return to state
+      // Calculate updated prices and return to screen/component
       return updateCart(state);
     },
+    removeFromCart: (state, action) => {
+      // Keep all items that don't match the id of the item to remove from the cart
+      state.cartItems = state.cartItems.filter((item) => item._id !== action.payload);
+
+      // Calculate updated prices and return to screen/component
+      return updateCart(state);
+    }
   },
 });
 
 // Export actions from reducer methods
-export const { addToCart } = cartSlice.actions;
+export const { addToCart, removeFromCart } = cartSlice.actions;
 
 // Reducer the cart slice reducer methods
 export default cartSlice.reducer;
