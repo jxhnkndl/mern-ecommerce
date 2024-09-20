@@ -28,8 +28,9 @@ const cartSlice = createSlice({
       // Otherwise, simply add the new item to the cart
       if (itemInCart) {
         state.cartItems = state.cartItems.map((item) =>
-          item._id === itemInCart._id ? itemInCart : item
+          item._id === itemInCart._id ? newItem : item
         );
+
       } else {
         state.cartItems = [...state.cartItems, newItem];
       }
