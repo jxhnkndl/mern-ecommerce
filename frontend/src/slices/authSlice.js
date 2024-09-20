@@ -16,11 +16,16 @@ const authSlice = createSlice({
       state.userInfo = action.payload;
       localStorage.setItem('userInfo', JSON.stringify(action.payload));
     },
+    logout: (state) => {
+      // Destory JWT cookie and user info from local storage to complete logout
+      state.userInfo = null;
+      localStorage.removeItem('userInfo');
+    }
   },
 });
 
 // Export actions from reducer methods
-export const { setCredentials } = authSlice.actions;
+export const { setCredentials, logout } = authSlice.actions;
 
 // Export reducer
 export default authSlice.reducer;
