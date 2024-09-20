@@ -32,6 +32,12 @@ const CartScreen = () => {
     dispatch(removeFromCart(id));
   };
 
+  // Redirect uthenticated users to the /shipping page
+  // Redirect unauthenticated users to the /login page
+  const checkoutHandler = () => {
+    navigate(`/login?redirect=/shipping`);
+  }
+
   return (
     <Row>
       {/* PRODUCT DETAILS */}
@@ -104,7 +110,8 @@ const CartScreen = () => {
               <Button
                 type='button'
                 className='btn-block'
-                disable={cartItems.length === 0}>
+                disable={cartItems.length === 0}
+                onClick={checkoutHandler}>
                 Proceed to Checkout
               </Button>
             </ListGroup.Item>
