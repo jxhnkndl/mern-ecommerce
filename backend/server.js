@@ -1,6 +1,7 @@
 // ES6 module syntax because type="module" is set in package.json
 import express from 'express';
 import dotenv from 'dotenv';
+import cookieParser from 'cookie-parser';
 import { notFound, errorHandler } from './middleware/errorMiddleware.js';
 import connectDB from './config/db.js';
 import productRoutes from './routes/productRoutes.js';
@@ -19,6 +20,9 @@ const app = express();
 // Body parsing middleware (JSON and Encoded Form object)
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+// Parse HTTP only cookie data so that req.cookies is accessible (for accessing the JWTs)
+app.use(cookieParser());
 
 // Get root endpoint
 app.get('/', (req, res) => {

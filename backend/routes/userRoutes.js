@@ -1,4 +1,5 @@
 import express from 'express';
+import { protect, admin } from '../middleware/authMiddleware.js';
 import {
   authUser,
   registerUser,
@@ -13,10 +14,19 @@ import {
 
 const router = express.Router();
 
-router.route('/').get(getUsers).post(registerUser);
-router.post('/login', authUser);
+router.route('/').get(protect, admin, getUsers).post(registerUser);
+
+router.post('/auth', authUser);
 router.post('/logout', logoutUser);
-router.route('/profile').get(getUserProfile).put(updateUserProfile);
-router.route('/:id').get(getUserById).put(updateUser).delete(deleteUser);
+
+router
+  .route('/profile')
+  .get(protect, getUserProfile)
+  .put(protect, updateUserProfile);
+router
+  .route('/:id')
+  .get(protect, admin, getUserById)
+  .put(protect, admin, updateUser)
+  .delete(protect, admin, deleteUser);
 
 export default router;
