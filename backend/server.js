@@ -16,6 +16,10 @@ connectDB();
 
 const app = express();
 
+// Body parsing middleware (JSON and Encoded Form object)
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
 // Get root endpoint
 app.get('/', (req, res) => {
   res.send('API is running...')
@@ -28,6 +32,5 @@ app.use('/api/users', userRoutes);
 // Set up error handling middleware
 app.use(notFound);
 app.use(errorHandler);
-
 
 app.listen(PORT, () => console.log(`Server running on port ${PORT} 🚀`));
