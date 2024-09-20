@@ -1,5 +1,5 @@
-import jwt from 'jsonwebtoken';
 import asyncHandler from '../middleware/asyncHandler.js';
+import generateToken from '../utils/generateToken.js';
 import User from '../models/User.js';
 
 // @desc    Auth user & get token
@@ -12,26 +12,15 @@ const authUser = asyncHandler(async (req, res) => {
   const user = await User.findOne({ email });
 
   // Check if user was found and that user's password matched password on record
-  if (user && await user.matchPassword(password)) {
-    // Generate JWT for auth
-    const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, { expiresIn: '30d'})
-
-    // Set JWT as HTTP only cookie
-    res.cookie('jwt', token, {
-      httpOnly: true,
-      // Only make true if in development mode
-      secure: process.env.NODE_ENV !== 'development',
-      // Prevent XSS
-      sameSite: 'strict',
-      // Calculated as 30 days in milliseconds
-      maxAge: 30 * 24 * 60 * 60 * 1000
-    })
+  if (user && (await user.matchPassword(password))) {
+    // Create JWT for authentication
+    generateToken(res, user._id);
 
     res.json({
       _id: user._id,
       name: user.name,
       email: user.email,
-      isAdmin: user.isAdmin
+      isAdmin: user.isAdmin,
     });
   } else {
     res.status(401);
@@ -43,7 +32,35 @@ const authUser = asyncHandler(async (req, res) => {
 // @route   POST /api/users
 // @access  Public
 const registerUser = asyncHandler(async (req, res) => {
-  res.send('Register user');
+  const { name, email, password } = req.body;
+
+  // Check if user exists
+  const userExists = await User.findOne({ email });
+
+  if (userExists) {
+    res.status(400);
+    throw new Error('User already exists');
+  }
+
+  // Create new user if user doesn't exist
+  const user = await User.create({ name, email, password });
+
+  // Send user data back to client if created successfully
+  // Throw error if user creation was unsuccessful
+  if (user) {
+    // Create JWT for authentication
+    generateToken(res, user._id);
+    
+    res.status(201).json({
+      _id: user._id,
+      name: user.name,
+      email: user.email,
+      isAdmin: user.isAdmin
+    })
+  } else {
+    res.status(400);
+    throw new Error('Invalid user data');
+  }
 });
 
 // @desc    Logout user
@@ -53,10 +70,10 @@ const logoutUser = asyncHandler(async (req, res) => {
   // Clear jwt cookie
   res.cookie('jwt', '', {
     httpOnly: true,
-    expiresIn: new Date(0)
+    expiresIn: new Date(0),
   });
 
-  res.status(200).json({ msg: 'Logged out successfully' })
+  res.status(200).json({ msg: 'Logged out successfully' });
 });
 
 // @desc    Get user profile
@@ -110,5 +127,5 @@ export {
   getUsers,
   deleteUser,
   getUserById,
-  updateUser
+  updateUser,
 };
