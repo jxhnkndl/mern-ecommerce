@@ -4,6 +4,7 @@ import dotenv from 'dotenv';
 import { notFound, errorHandler } from './middleware/errorMiddleware.js';
 import connectDB from './config/db.js';
 import productRoutes from './routes/productRoutes.js';
+import userRoutes from './routes/userRoutes.js';
 
 // Import environmental variables from .env
 dotenv.config();
@@ -22,6 +23,7 @@ app.get('/', (req, res) => {
 
 // Install app's product routes
 app.use('/api/products', productRoutes);
+app.use('/api/users', userRoutes);
 
 // Set up error handling middleware
 app.use(notFound);
