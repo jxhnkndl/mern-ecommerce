@@ -12,6 +12,7 @@ import App from './App';
 import CartScreen from './screens/CartScreen';
 import HomeScreen from './screens/HomeScreen';
 import LoginScreen from './screens/LoginScreen';
+import PrivateRoute from './components/PrivateRoute';
 import ProductScreen from './screens/ProductScreen';
 import RegisterScreen from './screens/RegisterScreen';
 import ShippingScreen from './screens/ShippingScreen';
@@ -30,7 +31,11 @@ const router = createBrowserRouter(
       <Route path='/register' element={<RegisterScreen />} />
       <Route path='/product/:id' element={<ProductScreen />} />
       <Route path='/cart' element={<CartScreen />} />
-      <Route path="/shipping" element={<ShippingScreen />} />
+
+      {/* PRIVATE ROUTE: Only authenticate users can view shipping screen */}
+      <Route path="" element={<PrivateRoute />}>
+        <Route path="/shipping" element={<ShippingScreen />} />
+      </Route>
     </Route>
   )
 );
