@@ -6,9 +6,11 @@ import { updateCart } from '../utils/cartUtils';
 // Cart state will be persisted in local storage so that selections persist visit to visit
 // If there is a cart object in local storage, extract and parse it
 // Otherwise set initial state to contain an empty cardItems array
+// Set shipping address as empty object
+// Set PayPal as the primary payment for now
 const initialState = localStorage.getItem('cart')
   ? JSON.parse(localStorage.getItem('cart'))
-  : { cartItems: [] };
+  : { cartItems: [], shippingAddress: [], paymentMethod: 'PayPal'};
 
 
 const cartSlice = createSlice({
@@ -44,12 +46,16 @@ const cartSlice = createSlice({
 
       // Calculate updated prices and return to screen/component
       return updateCart(state);
+    },
+    saveShippingAddress: (state, action) => {
+      state.shippingAddress = action.payload;
+      localStorage.setItem('cart', JSON.stringify(state));
     }
   },
 });
 
 // Export actions from reducer methods
-export const { addToCart, removeFromCart } = cartSlice.actions;
+export const { addToCart, removeFromCart, saveShippingAddress } = cartSlice.actions;
 
 // Reducer the cart slice reducer methods
 export default cartSlice.reducer;
