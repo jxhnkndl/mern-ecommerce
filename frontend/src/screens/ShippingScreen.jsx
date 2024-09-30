@@ -7,8 +7,8 @@ import CheckoutSteps from '../components/CheckoutSteps';
 import FormContainer from '../components/FormContainer';
 
 const ShippingScreen = () => {
-  // Get cart -> shiping address from global state
-  // Do this first in case there's already a shipping address to load into state
+  // Get cart -> shipping address from global state
+  // Do this first in case there's already a shipping address loaded into global state
   const cart = useSelector((state) => state.cart);
   const { shippingAddress } = cart;
 

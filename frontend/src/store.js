@@ -7,6 +7,7 @@ import authSliceReducer from './slices/authSlice';
 const store = configureStore({
   reducer: {
     // Bring in the reducer from the apiSlice as the slice's reducer path
+    // The [] syntax will adapt to becine whichever apiSlice is being used
     [apiSlice.reducerPath]: apiSlice.reducer,
     // Bring in reducers from other slices of state
     cart: cartSliceReducer,

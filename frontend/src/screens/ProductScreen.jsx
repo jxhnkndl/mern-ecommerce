@@ -22,10 +22,8 @@ const ProductScreen = () => {
   // Capture product's id from URL params
   const { id: productId } = useParams();
 
-  // Init navigation object
+  // Init navigation and dispatch hook instances
   const navigate = useNavigate();
-
-  // Init dispatch method
   const dispatch = useDispatch();
 
   // Fetch product details from API through Redux's API slice using the product's ID in the endpoint

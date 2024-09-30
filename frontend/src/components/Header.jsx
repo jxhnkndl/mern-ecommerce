@@ -21,6 +21,7 @@ const Header = () => {
 
   const logoutHandler = async () => {
     try {
+      // Use unwrap to access error or payload immediately 
       await logoutApiCall().unwrap();
       dispatch(logout());
       navigate('/login');

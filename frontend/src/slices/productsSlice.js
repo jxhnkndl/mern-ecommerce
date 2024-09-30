@@ -7,7 +7,7 @@ export const productsApiSlice = apiSlice.injectEndpoints({
     getProducts: builder.query({
       // Endpoint to channel this query to
       query: () => ({ url: PRODUCTS_URL }),
-      // How long should the data be cache for after the component using it unmounts (in seconds)
+      // How long should the data stay cache for after the component using it unmounts (in seconds)
       keepUnusedDataFor: 5
     }),
     getProductDetails: builder.query({
